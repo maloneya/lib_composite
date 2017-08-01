@@ -22,19 +22,3 @@ mod sys;
 pub mod kernel_api;
 pub mod sl;
 pub mod sl_lock;
-
-use kernel_api::DefKernelAPI;
-use sl::Sl;
-
-
-#[no_mangle]
-pub extern "C" fn rust_init() {
-    let def_api = DefKernelAPI::from_standard_boot_capabilities();
-
-    println!("This is a print from rust!");
-
-
-    Sl::start_scheduler_loop(def_api, 30, move |sl| {
-        println!("This is a print from the new thread!");
-    });
-}
