@@ -1,0 +1,18 @@
+[package]
+authors = ["Gregor Peach <gregorpeach@gmail.com>"]
+name = "lib_composite"
+version = "0.1.0"
+
+[dependencies]
+#libc = { git = "https://github.com/Others/libc", branch = "patch-1", default-features = false }
+libc = "0.2"
+libc-extra = "0.0.15"
+
+[lib]
+crate-type = ["staticlib"]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
