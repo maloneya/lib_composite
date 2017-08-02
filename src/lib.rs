@@ -17,9 +17,9 @@ macro_rules! print {
     ($($arg:tt)*) => ($crate::print_impl::print_args(format_args!($($arg)*)));
 }
 
-mod print_impl;
 mod sys;
 
 pub mod kernel_api;
+pub mod print_impl;
 pub mod sl;
 pub mod sl_lock;

@@ -21,6 +21,6 @@ impl Write for Printf {
     }
 }
 
-pub(crate) fn print_args(args: Arguments) {
+pub fn print_args(args: Arguments) {
     Printf.write_fmt(args).expect("Cannot fail to write to stdout!");
 }
