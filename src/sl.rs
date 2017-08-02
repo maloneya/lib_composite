@@ -8,14 +8,18 @@ use super::kernel_api::DefKernelAPI;
 use super::sys::sl;
 use super::sys::types;
 
+#[derive(Clone, Copy, Debug)]
 pub struct Sl;
 impl !Send for Sl{}
 impl !Sync for Sl{}
 
+#[derive(Clone)]
 pub struct Thread {
     thd_ptr: Shared<sl::sl_thd>
 }
 
+
+#[derive(Clone, Copy, Debug)]
 pub enum ThreadParameter {
     Priority(u32)
 }

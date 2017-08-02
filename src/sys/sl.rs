@@ -3,6 +3,7 @@ use libc::{c_int, c_uint, c_void};
 use super::types::{cycles_t, microsec_t, tcap_prio_t, thdcap_t, thdid_t};
 
 #[repr(C)]
+#[derive(Clone, Debug)]
 #[allow(non_camel_case_types, dead_code)]
 pub enum sl_thd_state{
     SL_THD_FREE = 0,
@@ -14,6 +15,7 @@ pub enum sl_thd_state{
 }
 
 #[repr(C)]
+#[derive(Clone, Debug)]
 #[allow(non_camel_case_types)]
 pub struct sl_thd {
     pub state: sl_thd_state,
