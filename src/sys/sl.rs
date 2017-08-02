@@ -63,6 +63,12 @@ pub type sched_param_t = u32;
 extern {
     pub fn sched_param_pack_rs(param_type: sched_param_type_t, value: c_uint) -> sched_param_t;
     pub fn sl_thd_curr_rs() -> *mut sl_thd;
+
+    pub fn sl_cyc2usec_rs(cyc: cycles_t) -> microsec_t;
+    pub fn sl_usec2cyc_rs(usec: microsec_t) -> cycles_t;
+
+    pub fn sl_now_rs() -> cycles_t;
+    pub fn sl_now_usec_rs() -> microsec_t;
 }
 
 // From sl.c
@@ -90,11 +96,5 @@ extern {
     pub fn sl_thd_wakeup(tid: thdid_t);
 
     pub fn sl_thd_yield(tid: thdid_t);
-
-    pub fn sl_cyc2usec(cyc: cycles_t) -> microsec_t;
-    pub fn sl_usec2cyc(usec: microsec_t) -> cycles_t;
-
-    pub fn sl_now() -> cycles_t;
-    pub fn sl_now_usec() -> microsec_t;
 }
 

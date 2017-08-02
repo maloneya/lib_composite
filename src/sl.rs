@@ -49,17 +49,17 @@ impl Sl {
         }
     }
 
-    pub fn timed_block(&self, duration: Duration) {
+    pub fn block_for(&self, duration: Duration) {
         let seconds = duration.as_secs();
         let extra_nanos = duration.subsec_nanos() as u64;
         let microseconds = seconds * (1000 * 1000) + (extra_nanos / 1000);
 
         let duration_in_cycles = unsafe {
-            sl::sl_usec2cyc(microseconds)
+            sl::sl_usec2cyc_rs(microseconds)
         };
 
         let absolute_timeout = unsafe {
-            sl::sl_now() + duration_in_cycles
+            sl::sl_now_rs() + duration_in_cycles
         };
 
         unsafe {
