@@ -1,6 +1,7 @@
 use std::boxed::FnBox;
 use std::mem;
 use std::ptr::Shared;
+use std::time::Duration;
 
 use libc::c_void;
 
@@ -42,11 +43,30 @@ impl Sl {
         Sl
     }
 
-    pub fn block_current_thread(&self) {
+    pub fn block(&self) {
         unsafe {
             sl::sl_thd_block(0);
         }
     }
+
+    pub fn timed_block(&self, duration: Duration) {
+        let seconds = duration.as_secs();
+        let extra_nanos = duration.subsec_nanos() as u64;
+        let microseconds = seconds * (1000 * 1000) + (extra_nanos / 1000);
+
+        let duration_in_cycles = unsafe {
+            sl::sl_usec2cyc(microseconds)
+        };
+
+        let absolute_timeout = unsafe {
+            sl::sl_now() + duration_in_cycles
+        };
+
+        unsafe {
+            sl::sl_thd_block_timeout(0, absolute_timeout);
+        }
+    }
+
 
     pub fn current_thread(&self) -> Thread {
         Thread {
