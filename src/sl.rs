@@ -26,9 +26,7 @@ impl Sl {
             sl::sl_init();
         }
 
-        let sl = Sl;
-
-        let mut root_thread = sl.spawn(entrypoint);
+        let mut root_thread = Sl.spawn(entrypoint);
         root_thread.set_param(ThreadParameter::Priority(root_thread_priority));
 
         unsafe {
@@ -43,6 +41,14 @@ impl Sl {
     pub fn block_current_thread(&self) {
         unsafe {
             sl::sl_thd_block(0);
+        }
+    }
+
+    pub fn current_thread(&self) -> Thread {
+        Thread {
+            thd_ptr: Shared::new(unsafe {
+                sl::sl_thd_curr_rs()
+            }).unwrap()
         }
     }
 
