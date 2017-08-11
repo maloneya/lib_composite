@@ -1,3 +1,5 @@
+use libc::c_int;
+
 use super::types::thdid_t;
 
 #[repr(C)]
@@ -18,6 +20,8 @@ extern {
 // From "sl_lock.h"
 extern {
     pub fn sl_lock_init(lock: *mut sl_lock);
+
+    pub fn sl_lock_try_take(lock: *const sl_lock) -> c_int;
 
     #[allow(dead_code)]
     pub fn sl_lock_holder(lock: *const sl_lock) -> thdid_t;

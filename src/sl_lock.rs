@@ -45,6 +45,16 @@ impl <T: ?Sized> Lock<T> {
             LockGuard::new(self)
         }
     }
+
+    pub fn try_lock(&self) -> Option<LockGuard<T>> {
+        unsafe {
+            if sl_lock::sl_lock_try_take(&self.internal_lock) != 0 {
+                Some(LockGuard::new(self))
+            } else {
+                None
+            }
+        }
+    }
 }
 
 impl <'lock, T: ?Sized> LockGuard<'lock, T> {

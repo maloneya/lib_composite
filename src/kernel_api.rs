@@ -6,7 +6,6 @@ use super::sys::types::{pgtblcap_t, vaddr_t};
 
 // The "friend" C file should provide these symbols
 extern {
-    #[allow()]
     static boot_mem_km_base: vaddr_t;
     static cos_mem_kern_pa_sz: c_ulong;
     static boot_captbl_self_untyped_pt: pgtblcap_t;

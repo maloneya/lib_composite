@@ -9,6 +9,12 @@ use super::kernel_api::DefKernelAPI;
 use super::sys::sl;
 use super::sys::types;
 
+// The friend C file should provide these symobls
+extern {
+    fn assign_thread_data(thd: *mut sl::sl_thd);
+}
+
+
 #[derive(Clone, Copy, Debug)]
 pub struct Sl;
 impl !Send for Sl{}
@@ -18,6 +24,14 @@ impl !Sync for Sl{}
 pub struct Thread {
     thd_ptr: Shared<sl::sl_thd>
 }
+
+impl PartialEq<Self> for Thread {
+    fn eq(&self, other: &Self) -> bool {
+        self.thdid() == other.thdid()
+    }
+}
+
+impl Eq for Thread {}
 
 
 #[derive(Clone, Copy, Debug)]
@@ -83,6 +97,7 @@ impl Sl {
 
         unsafe {
             let thd_ptr = sl::sl_thd_alloc(closure_spawn_wrapper, Box::into_raw(boxed_fn) as *mut c_void);
+            assign_thread_data(thd_ptr);
             Thread {
                 thd_ptr: Shared::new(thd_ptr).unwrap()
             }
@@ -103,7 +118,7 @@ impl Thread {
         }
     }
 
-    fn thdid(&self) -> types::thdid_t {
+    pub fn thdid(&self) -> types::thdid_t {
         unsafe {
             (*self.thd_ptr.as_ptr()).thdid
         }
@@ -130,6 +145,7 @@ struct FnBoxWrapper<'a>{
 }
 
 extern fn closure_spawn_wrapper(ptr: *mut c_void) {
+    // We use the c_void ptr to find the real entrypoint
     let boxed_wrapper = unsafe {
         // This is the only crazy unsafe thing we do
         let wrapper_ptr: *mut FnBoxWrapper = mem::transmute(ptr);
