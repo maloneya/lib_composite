@@ -40,11 +40,14 @@ pub enum ThreadParameter {
 }
 
 impl Sl {
-    pub fn start_scheduler_loop<F: FnBox(Sl)>(_: DefKernelAPI, root_thread_priority: u32, entrypoint: F) {
+    pub fn start_scheduler_loop<F: FnBox(Sl)>(d: DefKernelAPI, root_thread_priority: u32, entrypoint: F) {
         unsafe {
             sl::sl_init();
         }
+        Self::start_scheduler_loop_without_initializing(d, root_thread_priority, entrypoint);
+    }
 
+    pub fn start_scheduler_loop_without_initializing<F: FnBox(Sl)>(_: DefKernelAPI, root_thread_priority: u32, entrypoint: F) {
         let mut root_thread = Sl.spawn(entrypoint);
         root_thread.set_param(ThreadParameter::Priority(root_thread_priority));
 

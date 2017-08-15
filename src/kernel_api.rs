@@ -29,4 +29,8 @@ impl DefKernelAPI {
 
         DefKernelAPI
     }
+
+    pub unsafe fn assert_already_initialized() -> DefKernelAPI {
+        DefKernelAPI
+    }
 }

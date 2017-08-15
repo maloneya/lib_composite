@@ -11,7 +11,7 @@ extern crate libc;
 
 extern crate libc_extra;
 
-//// We put this before "mod" definitions, so they use this print macro
+// We put this before "mod" definitions, so they use this print macro
 #[macro_export]
 macro_rules! print {
    ($($arg:tt)*) => ($crate::print_impl::print_args(format_args!($($arg)*)));
