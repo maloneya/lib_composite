@@ -94,7 +94,7 @@ impl Sl {
 
     pub fn spawn<F: FnBox(Sl)>(&self, entrypoint: F) -> Thread {
         let boxed_fn = Box::new(FnBoxWrapper {
-            inner: Box::new(entrypoint) 
+            inner: Box::new(entrypoint)
         });
 
         unsafe {
